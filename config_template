@@ -1,0 +1,9 @@
+# This port will be used to access this machine from remote server
+REMOTE_ACCESS_PORT=2222
+
+# The port to connect to from remote machine
+LOCAL_PORT=22
+
+# The remote machine
+REMOTE_SERVER=user@example.com
+REMOTE_SERVER_PORT=22

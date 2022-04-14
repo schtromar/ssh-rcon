@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ ! -e "config" ]; then
+	echo "Config file not found. Copying template, now edit it!"
+	cp "config_template" "config"
+	exit
+fi
+
+source config
+
+while true; do
+	echo "Connecting to server"
+	ssh -R ${REMOTE_ACCESS_PORT}:localhost:${LOCAL_PORT} ${REMOTE_SERVER} -p ${REMOTE_SERVER_PORT}
+	echo "Connection lost..."
+	echo "reconnecting in 5 unless ctrl-c"
+	sleep 5
+done
