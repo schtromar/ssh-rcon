@@ -10,7 +10,7 @@ source config
 
 while true; do
 	echo "Connecting to server"
-	ssh -R ${REMOTE_ACCESS_PORT}:localhost:${LOCAL_PORT} ${REMOTE_SERVER} -p ${REMOTE_SERVER_PORT}
+	ssh -i ${SSH_KEY} -R ${REMOTE_ACCESS_PORT}:localhost:${LOCAL_PORT} ${REMOTE_SERVER} -p ${REMOTE_SERVER_PORT} 'cat /dev/zero' -T
 	echo "Connection lost..."
 	echo "reconnecting in 5 unless ctrl-c"
 	sleep 5

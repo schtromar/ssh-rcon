@@ -1,0 +1,47 @@
+#!/bin/bash
+INSTALLDIR=/usr/bin/ssh-rcon
+CONFIGLOCATION=/etc/ssh-rcon
+CONFIGTRUE=${INSTALLDIR}/config
+
+if [ $(id -u) -eq 0 ]; then
+
+	echo "Starting postinstall script for ssh-rcon"
+
+	echo "Using configuration file ${CONFIGLOCATION}/config"
+	echo "-------------------------------------------------"
+	cat ${CONFIGLOCATION}/config
+	echo "-------------------------------------------------"
+
+	read -p "Is eveything set correctly? [Y/n]" yn
+	case $yn in
+	[Yy]* )
+		source ${CONFIGLOCATION}/config
+		;;
+	[Nn]* )
+		echo "Aborting. Edit it and try again."
+		;;
+	* )
+		;;
+	esac
+
+
+	echo "Generating SSH key"
+	mkdir -p ${CONFIGLOCATION}/keys
+	ssh-keygen -b 2048 -t rsa -f ${CONFIGLOCATION}/keys/id_rsa -q -N ""
+	chown ssh-rcon ${CONFIGLOCATION}/keys/*
+	echo "Installing SSH key to server"
+	ssh-copy-id -i ${CONFIGLOCATION}/keys/id_rsa -p ${REMOTE_SERVER_PORT} ${REMOTE_SERVER}
+	echo "Trying the connection and securing the remote server"
+	su ssh-rcon -c "ssh -i ${CONFIGLOCATION}/keys/id_rsa -p ${REMOTE_SERVER_PORT} ${REMOTE_SERVER} -o StrictHostKeyChecking=no 'echo Login successful'"
+	echo "Enabling ssh-rcon service"
+	systemctl enable ssh-rcon
+	echo "Starting ssh-rcon service"
+	systemctl start ssh-rcon
+	echo "Installation complete. Thank you."
+	echo "You should secure the remote server by disabling the login shell for this user:"
+	echo "	usermod USER -s /bin/cat "
+	echo "But don't set it to /usr/sbin/nologin as it closes the connection."
+
+else
+	echo "Root acces is required to add an instance."
+fi

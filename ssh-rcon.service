@@ -1,0 +1,16 @@
+[Unit]
+Description=SSH remote control service
+DefaultDependencies=false
+
+[Service]
+User=ssh-rcon
+Group=ssh-rcon
+WorkingDirectory=/usr/bin/ssh-rcon
+ExecStart=/usr/bin/ssh-rcon/ssh-rcon
+Restart=always
+RestartSec=20
+RestartPreventExitStatus=0
+TimeoutStopSec=10
+
+[Install]
+WantedBy=multi-user.target

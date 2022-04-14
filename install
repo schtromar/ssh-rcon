@@ -1,0 +1,50 @@
+#!/bin/bash
+INSTALLDIR=/usr/bin/ssh-rcon
+CONFIGLOCATION=/etc/ssh-rcon
+CONFIGTRUE=${INSTALLDIR}/config
+
+if [ $(id -u) -eq 0 ]; then
+	while true; do
+		read -p "This program will install the ssh-rcon service on this device. Do you wish to continue? [y/n] " yn
+		case $yn in
+			[Yy]* )
+				if [ -d ${INSTALLDIR} ]; then
+					read -p "Directory ${INSTALLDIR} already exists. Overwrite? [y/N] " yn
+					if [ ${yn} = "y" -o ${yn} = "Y" ]; then
+						echo "Continuing installation to ${INSTALLDIR}"
+					else
+						echo "Aborting installation to ${INSTALLDIR}"
+						exit
+					fi
+
+				fi
+
+				echo "Adding user 'ssh-rcon'"
+				#This command also creates the install directory.
+				useradd -d ${INSTALLDIR} -m -U -s /usr/sbin/nologin -r ssh-rcon
+				echo "Copying program files"
+				cp -R . ${INSTALLDIR}
+				chmod +x ${INSTALLDIR}/ssh-rcon
+				echo "Adding ssh-rcon service"
+				cp ${INSTALLDIR}/ssh-rcon.service /etc/systemd/system/
+				echo "Moving config file to ${CONFIGLOCATION}"
+				mkdir ${CONFIGLOCATION}
+				mv ${CONFIGTRUE} ${CONFIGLOCATION}/config
+				ln -s ${CONFIGLOCATION}/config ${CONFIGTRUE}
+				echo "Installation is complete. Now you can configure the service in"
+				echo "	${CONFIGLOCATION}/config"
+				echo "and running postinstall to finish up."
+
+				break;;
+			[Nn]* )
+				echo "Aborting install. No changes were made."
+				exit;;
+			* ) echo "Invalid response.";;
+		esac
+	done
+
+
+
+else
+	echo "Installation is not possible without root access."
+fi
