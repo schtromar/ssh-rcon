@@ -5,5 +5,15 @@ REMOTE_ACCESS_PORT=2222
 LOCAL_PORT=22
 
 # The remote machine
-REMOTE_SERVER=user@example.com
+REMOTE_SERVER=user@exaple.com
 REMOTE_SERVER_PORT=22
+
+# This user should meet the following requirements:
+#	- be set up for passwordless login using ssh keys
+#	- not have any real access to the machine, eg by setting its login shell to /bin/cat
+
+# Ssh key to use
+SSH_KEY=/etc/ssh-rcon/keys/id_rsa
+
+# Command to keep session alive. Not needed if shell is /bin/cat or similar
+COMMAND='while true; do echo beep; sleep 60; done'
