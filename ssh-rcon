@@ -17,7 +17,7 @@ source $config
 
 while true; do
 	echo "Connecting to server"
-	ssh -i ${SSH_KEY} -R ${REMOTE_ACCESS_PORT}:localhost:${LOCAL_PORT} ${REMOTE_SERVER} -p ${REMOTE_SERVER_PORT} -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -o ServerAliveCountMax=3
+	ssh -i ${SSH_KEY} -R ${REMOTE_ACCESS_PORT}:${LOCAL_HOST}:${LOCAL_PORT} ${REMOTE_SERVER} -p ${REMOTE_SERVER_PORT} -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -o ServerAliveCountMax=3
 	echo "Connection lost..."
 	echo "reconnecting in 5 unless ctrl-c"
 	sleep 5

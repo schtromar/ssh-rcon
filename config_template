@@ -3,9 +3,11 @@ REMOTE_ACCESS_PORT=2222
 
 # The port to connect to from remote machine
 LOCAL_PORT=22
+# The host on the local network to connect to
+LOCAL_HOST=localhost
 
 # The remote machine
-REMOTE_SERVER=user@exaple.com
+REMOTE_SERVER=user@example.com
 REMOTE_SERVER_PORT=22
 
 # This user should meet the following requirements:
@@ -14,6 +16,3 @@ REMOTE_SERVER_PORT=22
 
 # Ssh key to use
 SSH_KEY=/etc/ssh-rcon/keys/id_rsa
-
-# Command to keep session alive. Not needed if shell is /bin/cat or similar
-COMMAND='while true; do echo beep; sleep 60; done'
