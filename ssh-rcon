@@ -1,12 +1,19 @@
 #!/bin/bash
 
-if [ ! -e "config" ]; then
+if [ -z $1 ]; then
+	config="config"
+else
+	config=$1
+fi
+
+
+if [ ! -e $config ]; then
 	echo "Config file not found. Copying template, now edit it!"
-	cp "config_template" "config"
+	cp "config_template" $config
 	exit
 fi
 
-source config
+source $config
 
 while true; do
 	echo "Connecting to server"

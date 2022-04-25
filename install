@@ -27,6 +27,7 @@ if [ $(id -u) -eq 0 ]; then
 				chmod +x ${INSTALLDIR}/ssh-rcon
 				echo "Adding ssh-rcon service"
 				cp ${INSTALLDIR}/ssh-rcon.service /etc/systemd/system/
+				cp ${INSTALLDIR}/ssh-rcon@.service /etc/systemd/system/
 				echo "Moving config file to ${CONFIGLOCATION}"
 				mkdir ${CONFIGLOCATION}
 				mv ${CONFIGTRUE} ${CONFIGLOCATION}/config

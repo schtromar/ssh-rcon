@@ -1,12 +1,12 @@
 [Unit]
-Description=SSH remote control service %I
+Description=SSH remote control service: Instance %I
 DefaultDependencies=false
 
 [Service]
 User=ssh-rcon
 Group=ssh-rcon
 WorkingDirectory=/usr/bin/ssh-rcon
-ExecStart=/usr/bin/ssh-rcon/ssh-rcon %I
+ExecStart=/usr/bin/ssh-rcon/ssh-rcon config.%I
 Restart=always
 RestartSec=20
 RestartPreventExitStatus=0
