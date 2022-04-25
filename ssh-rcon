@@ -6,7 +6,6 @@ else
 	config=$1
 fi
 
-
 if [ ! -e $config ]; then
 	echo "Config file not found. Copying template, now edit it!"
 	cp "config_template" $config
@@ -15,10 +14,24 @@ fi
 
 source $config
 
+if [ ${HEARTBEAT} -ne ${HEARTBEAT} ]; then
+	HEARTBEAT=30
+fi
+
+if [ ${DROP_AFTER} -ne ${DROP_AFTER} ]; then
+	DROP_AFTER=3
+fi
+
+if [ ${RETRY_TIMEOUT} -ne ${RETRY_TIMEOUT} ]; then
+	RETRY_TIMEOUT=15
+fi
+
+
+
 while true; do
 	echo "Connecting to server"
-	ssh -i ${SSH_KEY} -R ${REMOTE_ACCESS_PORT}:${LOCAL_HOST}:${LOCAL_PORT} ${REMOTE_SERVER} -p ${REMOTE_SERVER_PORT} -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -o ServerAliveCountMax=3
+	ssh -i ${SSH_KEY} -R ${REMOTE_ACCESS_PORT}:${LOCAL_HOST}:${LOCAL_PORT} ${REMOTE_SERVER} -p ${REMOTE_SERVER_PORT} -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=${HEARTBEAT} -o ServerAliveCountMax=${DROP_AFTER}
 	echo "Connection lost..."
-	echo "reconnecting in 5 unless ctrl-c"
-	sleep 5
+	echo "reconnecting in ${RETRY_TIMEOUT} unless ctrl-c"
+	sleep ${RETRY_TIMEOUT}
 done

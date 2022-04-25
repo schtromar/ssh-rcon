@@ -16,3 +16,10 @@ REMOTE_SERVER_PORT=22
 
 # Ssh key to use
 SSH_KEY=/etc/ssh-rcon/keys/id_rsa
+
+# Send keep-alive packets every _ seconds
+HEARTBEAT=60
+# Drop connection after missing _ keep-alive packets
+DROP_AFTER=2
+# Wait _ seconds before trying to reconnect
+RETRY_TIMEOUT=360
